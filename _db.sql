@@ -164,7 +164,7 @@ CREATE TABLE `%%prefix%%elf_forms_fields` (
   `table_name` varchar(50) NOT NULL DEFAULT '',
   `field_name` varchar(50) NOT NULL DEFAULT '',
   `name` varchar(50) NOT NULL DEFAULT '',
-  `type` enum('string','hidden','eval','text','int','float','link','select_simple','select_enum','checkbox','radio','date','password','h','hm','hms') NOT NULL DEFAULT 'string',
+  `type` enum('string','hidden','eval','text','int','float','link','select_simple','select_enum','checkbox','radio','date','password','h','hm','hms','wysiwyg','picture') NOT NULL DEFAULT 'string',
   `size` blob DEFAULT NULL,
   `default_value` varchar(50) DEFAULT NULL,
   `title` varchar(150) DEFAULT NULL,
