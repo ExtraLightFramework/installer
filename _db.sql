@@ -202,3 +202,17 @@ CREATE TABLE `%%prefix%%elf_forms_related` (
   CONSTRAINT `%%prefix%%elf_forms_related_ibfk_2` FOREIGN KEY (`master_id`) REFERENCES `%%prefix%%elf_forms` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `%%prefix%%elf_forms_related_ibfk_3` FOREIGN KEY (`slave_id`) REFERENCES `%%prefix%%elf_forms` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+---sql stmt---
+CREATE TABLE `%%prefix%%files` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `parent_id` int(11) unsigned NOT NULL DEFAULT 0,
+  `type` enum('folder','video','file','image') DEFAULT NULL,
+  `fname` varchar(512) DEFAULT NULL,
+  `name` varchar(512) DEFAULT NULL,
+  `ext` varchar(20) NOT NULL DEFAULT '' COMMENT 'расширение файла',
+  `metadata` text DEFAULT NULL,
+  `tm` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `fname` (`parent_id`,`fname`),
+  KEY `parent_id` (`type`,`name`,`parent_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Файлы контента/каталога';
