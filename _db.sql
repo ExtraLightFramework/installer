@@ -68,6 +68,33 @@ INSERT INTO %%prefix%%settings (`name`,`value`,`desc`) VALUES('YANDEX_VERIFICATI
 ---sql stmt---
 INSERT INTO %%prefix%%settings (`name`,`value`,`desc`) VALUES('GOOGLE_VERIFICATION','','Код верификации от Google');
 ---sql stmt---
+INSERT INTO %%prefix%%settings (`name`,`value`,`desc`) VALUES('REDIRECTOR_ENABLED',0,'Вкл./выкл. механизма переадресации ссылок со старого сайта');
+---sql stmt---
+DROP TABLE IF EXISTS %%prefix%%redirector;
+---sql stmt---
+CREATE TABLE `%%prefix%%redirector` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `request_uri` varchar(4096) DEFAULT NULL,
+  `redirect_to` varchar(4096) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `request_uri` (`request_uri`,`redirect_to`) USING HASH
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb3;
+---sql stmt---
+DROP TABLE IF EXISTS %%prefix%%entry_points;
+---sql stmt---
+CREATE TABLE `%%prefix%%entry_points` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `code` int(3) unsigned NOT NULL DEFAULT 0,
+  `fixed` int(1) unsigned NOT NULL DEFAULT 0,
+  `request_uri` varchar(4096) NOT NULL DEFAULT '',
+  `referer` varchar(255) NOT NULL DEFAULT '',
+  `get_params` varchar(1024) NOT NULL DEFAULT '',
+  `tm` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `request_uri` (`request_uri`,`referer`) USING HASH,
+  KEY `code` (`code`,`fixed`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb3;
+---sql stmt---
 DROP TABLE IF EXISTS %%prefix%%routing;
 ---sql stmt---
 CREATE TABLE `%%prefix%%routing` (
