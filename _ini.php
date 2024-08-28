@@ -15,6 +15,7 @@ define ('SITE',				'<% ini.domain %>'.DIR_ALIAS);
 define ('SITE_PROTOCOL',	'<% ini.protocol %>');
 define ('SYSTEM_LANGUAGE',	'ru');
 define ('APP_DIR',			'app');
+define ('MODULES_DIR',		'modules');
 define ('INTERFACES_DIR',	'interfaces');
 define ('CONTROLLERS_DIR',	'controllers');
 define ('MODELS_DIR',		'models');
