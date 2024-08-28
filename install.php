@@ -100,13 +100,13 @@ define ('ROOTPATH', str_replace("\\","/",realpath(dirname(__FILE__)).'/'));
 	</form>
 	<form action="javascript:_step(3)" method="post" id="elf-install-3">
 		<h1>Extra Light Framework installer (Step 3)</h1>
-		<h2>Extra Modules</h2>
+		<h2>Extra Modules (NOT AVAILABLE YET!!! Simple skip the step)</h2>
 <?php
 	if (($xml = simplexml_load_file(__DIR__.'/modules.xml')) !== false):
 ?>
 		<?php foreach ($xml as $module):?>
 		<div class="module">
-			<label><input type="checkbox" id="module-<?=(string)$module->name?>" class="chk-module" data-name="<?=(string)$module->name?>" name="module_<?=(string)$module->name?>" title="install the module" /> - <?=(string)$module->name?></label>
+			<label><input type="checkbox" disabled="disabled" id="module-<?=(string)$module->name?>" class="chk-module" data-name="<?=(string)$module->name?>" name="module_<?=(string)$module->name?>" title="install the module" /> - <?=(string)$module->name?></label>
 			<?php if (!empty($module->dependencies)):?>
 				<?php foreach ($module->dependencies as $dep):
 						if ((string)$dep->depend):?>
