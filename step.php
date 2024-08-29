@@ -126,7 +126,7 @@ if (!empty($_POST['step']) && (int)$_POST['step']) {
 				foreach ($stmt as $v) {
 					@$mysqli->query($v);
 					if ($mysqli->errno)
-						$ret['error'] .= (!empty($ret['error'])?"\n":"")."SQL statement error: ".$mysqli->error;
+						$ret['error'] .= (!empty($ret['error'])?"\n":"")."SQL statement error: ".$mysqli->error."\nSQL: {$v}";
 				}
 			}
 			break;

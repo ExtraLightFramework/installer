@@ -39,10 +39,6 @@ define ('DB_USER',	'<% ini.db.user %>');
 define ('DB_PASS',	'<% ini.db.pass %>');
 define ('DB_PREFIX','<% ini.db.prefix %>');
 
-define ('GROUP_USER',	1);
-define ('GROUP_ADMIN',	2);
-define ('GROUP_TECH',	4);
-
 // System settings
 define ('SECRET_WORD',		'TybjVjhbrjyt');
 define ('MAIL_SENDER',		'<% ini.mail.sender %>');

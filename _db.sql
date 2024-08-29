@@ -22,7 +22,19 @@ CREATE TABLE `%%prefix%%users` (
   KEY `tmregIdx` (`tm_reg`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='пользователи системы';
 ---sql stmt---
-INSERT INTO %%prefix%%users (`login`,`passwd`,`name`,`email`,`group`,`tm_reg`) VALUES('%%admin_login%%',md5('%%admin_passwd%%'),'Администратор','%%service_emails%%',7,%%time%%);
+INSERT INTO %%prefix%%users (`login`,`passwd`,`name`,`email`,`group`,`tm_reg`) VALUES('%%admin_login%%',md5('%%admin_passwd%%'),'Администратор','%%service_emails%%',15,%%time%%);
+---sql stmt---
+DROP TABLE IF EXISTS %%prefix%%users_groups;
+---sql stmt---
+CREATE TABLE `%%prefix%%users_groups` (
+  `id` int(2) unsigned NOT NULL DEFAULT 0,
+  `name` varchar(30) NOT NULL DEFAULT '',
+  `alias` varchar(30) NOT NULL DEFAULT '',
+  `desc` varchar(150) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+---sql stmt---
+INSERT INTO `%%prefix%%users_groups` VALUES (1,'Пользователь','user',''),(2,'Менеджер','manager',''),(8,'Администратор','admin','Админстратор системы. Самые широкие права'),(4,'Тех.персонал','tech','Технический персонал системы');
 ---sql stmt---
 DROP TABLE IF EXISTS %%prefix%%settings;
 ---sql stmt---
@@ -77,8 +89,8 @@ CREATE TABLE `%%prefix%%redirector` (
   `request_uri` varchar(4096) DEFAULT NULL,
   `redirect_to` varchar(4096) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `request_uri` (`request_uri`,`redirect_to`) USING HASH
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb3;
+  UNIQUE KEY `request_uri` (`request_uri`(200),`redirect_to`(200)) USING HASH
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 ---sql stmt---
 DROP TABLE IF EXISTS %%prefix%%entry_points;
 ---sql stmt---
@@ -91,9 +103,9 @@ CREATE TABLE `%%prefix%%entry_points` (
   `get_params` varchar(1024) NOT NULL DEFAULT '',
   `tm` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `request_uri` (`request_uri`,`referer`) USING HASH,
+  UNIQUE KEY `request_uri` (`request_uri`(200),`referer`(255)) USING HASH,
   KEY `code` (`code`,`fixed`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 ---sql stmt---
 DROP TABLE IF EXISTS %%prefix%%routing;
 ---sql stmt---
@@ -230,6 +242,8 @@ CREATE TABLE `%%prefix%%elf_forms_related` (
   CONSTRAINT `%%prefix%%elf_forms_related_ibfk_3` FOREIGN KEY (`slave_id`) REFERENCES `%%prefix%%elf_forms` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 ---sql stmt---
+DROP TABLE IF EXISTS %%prefix%%files;
+---sql stmt---
 CREATE TABLE `%%prefix%%files` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) unsigned NOT NULL DEFAULT 0,
@@ -243,3 +257,30 @@ CREATE TABLE `%%prefix%%files` (
   UNIQUE KEY `fname` (`parent_id`,`fname`),
   KEY `parent_id` (`type`,`name`,`parent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Файлы контента/каталога';
+---sql stmt---
+DROP TABLE IF EXISTS %%prefix%%syslog;
+---sql stmt---
+CREATE TABLE `%%prefix%%syslog` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL DEFAULT 0,
+  `model` varchar(30) NOT NULL DEFAULT '',
+  `action` varchar(30) NOT NULL DEFAULT '',
+  `tm_start` int(11) unsigned NOT NULL DEFAULT 0,
+  `tm_end` int(11) unsigned NOT NULL DEFAULT 0,
+  `desc` text DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+---sql stmt---
+DROP TABLE IF EXISTS %%prefix%%options;
+---sql stmt---
+CREATE TABLE `%%prefix%%options` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `type` enum('scalar','array') NOT NULL DEFAULT 'scalar',
+  `value_type` enum('string','integer','decimal','date','time','datetime') NOT NULL DEFAULT 'string',
+  `name` varchar(50) NOT NULL DEFAULT '',
+  `value` text DEFAULT NULL,
+  `valid_from` date NOT NULL DEFAULT '0000-00-00',
+  `valid_to` date NOT NULL DEFAULT '9999-12-31',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`,`valid_from`,`valid_to`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
